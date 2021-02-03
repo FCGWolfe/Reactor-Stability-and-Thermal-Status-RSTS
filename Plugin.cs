@@ -11,14 +11,17 @@ namespace RSTS
     {
         public override string HarmonyIdentifier()
         {
-            return "RSTS";
+            return "FCGWolfe.RSTS";
         }
 
-        protected static string Version => "1.0_idb-1";
+        public override string Version => "1.0_public";
 
-        protected static string Author => "FCGWolfe/Ship's Compooter";
 
-        protected static string ShortDescription => "Reactor Stability and Thermal Status.";
+        public override string Author => "💩Ship's Compooter💩 | Dragon";
+
+        public override string ShortDescription => "Reactor Stability and Thermal Status.";
+
+        //public static string VerCMDString = PluginManager.Instance.GetPlugin("FCGWolfe.RSTS").Version;
 
     }
 }

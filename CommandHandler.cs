@@ -1,10 +1,5 @@
 ﻿using PulsarPluginLoader.Chat.Commands;
 using PulsarPluginLoader.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RSTS
 {
@@ -36,20 +31,21 @@ namespace RSTS
                 {
                     case "togglereadout":
                     case "tr":
-                        if (!RSTSPatch.IsReadoutEnabled)
-                        {
-                            RSTSPatch.IsReadoutEnabled = true;
-                            Messaging.Notification("RSTS Readout Enabled!");
-                        }
-                        else if (RSTSPatch.IsReadoutEnabled)
-                        {
-                            RSTSPatch.IsReadoutEnabled = false;
-                            Messaging.Notification("RSTS Readout Disabled!");
-                        }
+                        RSTSPatch.IsReadoutEnabled = !RSTSPatch.IsReadoutEnabled;
+                        PLXMLOptionsIO.Instance.CurrentOptions.SetStringValue("RSTSReadoutEnabled", RSTSPatch.IsReadoutEnabled.ToString());
+                        string IREResultString = RSTSPatch.IsReadoutEnabled ? "Enabled!" : "Disabled!";
+                        Messaging.Notification($"RSTS Readout is now {IREResultString}");
                         break;
 
-                    case "":
-                        Messaging.Notification("Too lazy to enter a subcommand, huh?");
+                    case "ver":
+                        Messaging.Notification($"RSTS Version 1.0");
+                        break;
+
+                    default:
+                        //Messaging.Notification("Too lazy to enter a subcommand, huh?");
+                        RSTSPatch.IsReadoutEnabled = !RSTSPatch.IsReadoutEnabled;
+                        string IREResultStringLazy = RSTSPatch.IsReadoutEnabled ? "Enabled!" : "Disabled!";
+                        Messaging.Notification($"RSTS Readout is now {IREResultStringLazy}");
                         break;
                 }
             }

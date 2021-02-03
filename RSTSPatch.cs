@@ -17,8 +17,8 @@ namespace RSTS
         {
             if (PLServer.Instance != null && PLEncounterManager.Instance.PlayerShip != null && IsReadoutEnabled)
             {
-                string ReactorStatus;
-                bool ReactorIsFine = (!PLEncounterManager.Instance.PlayerShip.IsReactorOverheated() && !PLEncounterManager.Instance.PlayerShip.IsReactorTempCritical() && !PLEncounterManager.Instance.PlayerShip.IsReactorInMeltdown());
+                string ReactorStatus = string.Empty;
+                //bool ReactorIsFine = (!PLEncounterManager.Instance.PlayerShip.IsReactorOverheated() && !PLEncounterManager.Instance.PlayerShip.IsReactorTempCritical() && !PLEncounterManager.Instance.PlayerShip.IsReactorInMeltdown());
                 /*
                  * This is gonna be neat.
                  * 
@@ -30,27 +30,37 @@ namespace RSTS
                 string ReactorIcon5 = "Φ";
                 string ReactorIcon6 = "Θ";
                 */
-                if (Mathf.RoundToInt(Mathf.Clamp01(1f - PLEncounterManager.Instance.PlayerShip.CoreInstability) * 100f) < 100 && ReactorIsFine)
+                if (PLEncounterManager.Instance.PlayerShip.IsReactorOverheated())
                 {
-                    ReactorIsFine = false;
-                    ReactorStatus = "<color=yellow>Unstable - Recovering </color><color=#ff8c00><b><<╪>></b></color><color=yellow> Stability: " + Mathf.RoundToInt(Mathf.Clamp01(1f - PLEncounterManager.Instance.PlayerShip.CoreInstability) * 100f).ToString("000") + "%</color>";
+                    ReactorStatus = "<color=#ff8c00>REACTOR SAFETY SHUTDOWN ENGAGED!</color> <color=#B8860B>~╫~</color>";
                 }
-                else if (Mathf.RoundToInt(Mathf.Clamp01(1f - PLEncounterManager.Instance.PlayerShip.CoreInstability) * 100f) < 100 && PLEncounterManager.Instance.PlayerShip.IsReactorOverheated() && (ReactorIsFine || !ReactorIsFine))
+                else if (PLEncounterManager.Instance.PlayerShip.ShouldEjectReactorCore())
                 {
-                    ReactorStatus = "<color=#ff8c00>OVERHEATED!</color> <color=#B8860B>~╫~</color> Temp: " + Mathf.RoundToInt(PLEncounterManager.Instance.PlayerShip.ReactorOverheatTime / PLEncounterManager.Instance.PlayerShip.MyStats.ReactorTempMax * 100f).ToString("000") + "%";
+                    ReactorStatus = "<color=red>CORE IMPLOSION</color> <color=red><╪></color> <color=red>IMMINENT</color>";
                 }
-                else if (Mathf.RoundToInt(Mathf.Clamp01(1f - PLEncounterManager.Instance.PlayerShip.CoreInstability) * 100f) < 100 && PLEncounterManager.Instance.PlayerShip.IsReactorTempCritical() && (ReactorIsFine || !ReactorIsFine))
+                else if (PLEncounterManager.Instance.PlayerShip.IsReactorInMeltdown())
                 {
-                    ReactorStatus = "<color=#DC143C>DANGER:</color> <color=#FFA500>THERMAL STRESS</color> <color=red><b>~╫~</b></color> <color=#FFA500>STABILITY: " + Mathf.RoundToInt(Mathf.Clamp01(1f - PLEncounterManager.Instance.PlayerShip.CoreInstability) * 100f).ToString("000") + "%</color>";
+                    ReactorStatus = "<color=red>CORE</color> <color=red><╪></color> <color=red>JETTISONED</color>";
                 }
-                else if (Mathf.RoundToInt(Mathf.Clamp01(1f - PLEncounterManager.Instance.PlayerShip.CoreInstability) * 100f) < 100 && PLEncounterManager.Instance.PlayerShip.IsReactorInMeltdown() && (ReactorIsFine || !ReactorIsFine))
+                else if (PLEncounterManager.Instance.PlayerShip.IsReactorTempCritical())
                 {
-                    ReactorStatus = "<color=#8B0000>EJECTING</color> <color=red><╪></color> <color=#8B0000>REACTOR CORE</color>";
+                    ReactorStatus = "<color=red>DANGER:</color> <color=#FFA500>THERMAL STRESS</color> <color=red><b>~╫~</b></color>";
+                }
+                else if (PLEncounterManager.Instance.PlayerShip.CoreInstability > 0)
+                {
+                    ReactorStatus = "<color=yellow>Unstable - Recovering </color><color=#ff8c00><b><<╪>></b></color>";
+                }
+                else
+                { 
+                    ReactorStatus = "Stable <color=#32CD32><╫></color>";
+                }
+                if (PLEncounterManager.Instance.PlayerShip.CoreInstability > 0)
+                {
+                    ReactorStatus += " <color=#FFA500>STABILITY: " + Mathf.RoundToInt(Mathf.Clamp01(1f - PLEncounterManager.Instance.PlayerShip.CoreInstability) * 100f).ToString("000") + "%</color>";
                 }
                 else
                 {
-                    ReactorIsFine = true;
-                    ReactorStatus = "Stable <color=#32CD32><╫></color> Temp: " + Mathf.RoundToInt(PLEncounterManager.Instance.PlayerShip.MyStats.ReactorTempCurrent / PLEncounterManager.Instance.PlayerShip.MyStats.ReactorTempMax * 100f).ToString("000") + "%";
+                    ReactorStatus += " Temperature: " + Mathf.RoundToInt(PLEncounterManager.Instance.PlayerShip.MyStats.ReactorTempCurrent / PLEncounterManager.Instance.PlayerShip.MyStats.ReactorTempMax * 100f).ToString("000") + "%";
                 }
 
                 PLGlobal.SafeLabelSetText(___CurrentVersionLabel, $"{___CurrentVersionLabel.text}\n\n\n\nRSTS: {ReactorStatus}");
