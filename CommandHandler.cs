@@ -1,4 +1,5 @@
-﻿using PulsarPluginLoader.Chat.Commands;
+﻿using PulsarPluginLoader;
+using PulsarPluginLoader.Chat.Commands;
 using PulsarPluginLoader.Utilities;
 
 namespace RSTS
@@ -38,7 +39,7 @@ namespace RSTS
                         break;
 
                     case "ver":
-                        Messaging.Notification($"RSTS Version 1.0");
+                        Messaging.Notification($"RSTS Version {PluginManager.Instance.GetPlugin("Reactor Stability and Thermal Status (RSTS)").Version}");
                         break;
 
                     default:
