@@ -1,17 +1,18 @@
-﻿using PulsarPluginLoader;
-using PulsarPluginLoader.Chat.Commands;
-using PulsarPluginLoader.Utilities;
+﻿using PulsarModLoader;
+using PulsarModLoader.Chat.Commands.CommandRouter;
+using PulsarModLoader.Utilities;
+using PulsarModLoader.Chat.Commands;
 
 namespace RSTS
 {
-    class CommandHandler : IChatCommand
+    class CommandHandler : ChatCommand
     {
-        public string[] CommandAliases()
+        public override string[] CommandAliases()
         {
             return new string[] { "rsts" };
         }
 
-        public string Description()
+        public override string Description()
         {
             return "RSTS";
         }
@@ -24,7 +25,7 @@ namespace RSTS
         {
             return false;
         }
-        public bool Execute(string arguments, int executor)
+        public override void Execute(string arguments)
         {
             string[] SplitArguments = arguments.Split(' ');
             {
@@ -39,7 +40,7 @@ namespace RSTS
                         break;
 
                     case "ver":
-                        Messaging.Notification($"RSTS Version {PluginManager.Instance.GetPlugin("Reactor Stability and Thermal Status (RSTS)").Version}");
+                        Messaging.Notification($"RSTS Version {ModManager.Instance.GetMod("Reactor Stability and Thermal Status (RSTS)").Version}");
                         break;
 
                     default:
@@ -50,7 +51,6 @@ namespace RSTS
                         break;
                 }
             }
-            return false;
         }
     }
 }

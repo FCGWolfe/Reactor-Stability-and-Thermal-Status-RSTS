@@ -10,14 +10,16 @@ using UnityEngine.UI;
 namespace RSTS
 {
     [HarmonyPatch(typeof(PLInGameUI), "Update")]
-    class RSTSPatch
+    public class RSTSPatch
     {
         public static bool IsReadoutEnabled = false;
+        public static string ReactorStatus;
+        //public static GameObject BrokenReactorVisual = PLEncounterManager.Instance.PlayerShip.InteriorDynamic.Find("Reactor_01_GlassBroken");
         static void Postfix(PLNetworkManager __instance, Text ___CurrentVersionLabel)
         {
-            if (PLServer.Instance != null && PLEncounterManager.Instance.PlayerShip != null && IsReadoutEnabled)
+            if (PLServer.Instance != null && PLEncounterManager.Instance.PlayerShip != null && PLEncounterManager.Instance.PlayerShip.ReactorInstance != null)
             {
-                string ReactorStatus = string.Empty;
+                //string ReactorStatus = string.Empty;
                 //bool ReactorIsFine = (!PLEncounterManager.Instance.PlayerShip.IsReactorOverheated() && !PLEncounterManager.Instance.PlayerShip.IsReactorTempCritical() && !PLEncounterManager.Instance.PlayerShip.IsReactorInMeltdown());
                 /*
                  * This is gonna be neat.
@@ -30,6 +32,7 @@ namespace RSTS
                 string ReactorIcon5 = "Φ";
                 string ReactorIcon6 = "Θ";
                 */
+
                 if (PLEncounterManager.Instance.PlayerShip.IsReactorOverheated())
                 {
                     ReactorStatus = "<color=#ff8c00>REACTOR SAFETY SHUTDOWN ENGAGED!</color> <color=#B8860B>~╫~</color>";
@@ -63,7 +66,15 @@ namespace RSTS
                     ReactorStatus += " Temperature: " + Mathf.RoundToInt(PLEncounterManager.Instance.PlayerShip.MyStats.ReactorTempCurrent / PLEncounterManager.Instance.PlayerShip.MyStats.ReactorTempMax * 100f).ToString("000") + "%";
                 }
 
-                PLGlobal.SafeLabelSetText(___CurrentVersionLabel, $"{___CurrentVersionLabel.text}\n\n\n\nRSTS: {ReactorStatus}");
+                if (IsReadoutEnabled)
+                {
+                    PLGlobal.SafeLabelSetText(___CurrentVersionLabel, $"{___CurrentVersionLabel.text}\n\n\n\nRSTS: {ReactorStatus}");
+                }
+                else if (!IsReadoutEnabled)
+                {
+                    ReactorStatus = string.Empty;
+                }
+
             }
         }
     }

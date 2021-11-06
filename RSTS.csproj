@@ -43,8 +43,8 @@
     <Reference Include="PLInputBase">
       <HintPath>C:\Gaming\Steam\steamapps\common\PULSARLostColony\PULSAR_LostColony_Data\Managed\PLInputBase.dll</HintPath>
     </Reference>
-    <Reference Include="PulsarPluginLoader">
-      <HintPath>C:\Gaming\Steam\steamapps\common\PULSARLostColony\PULSAR_LostColony_Data\Managed\PulsarPluginLoader.dll</HintPath>
+    <Reference Include="PulsarModLoader">
+      <HintPath>C:\Gaming\Steam\steamapps\common\PULSARLostColony\PULSAR_LostColony_Data\Managed\PulsarModLoader.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

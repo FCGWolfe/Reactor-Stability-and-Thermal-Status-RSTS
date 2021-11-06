@@ -1,4 +1,4 @@
-﻿using PulsarPluginLoader;
+﻿using PulsarModLoader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace RSTS
 {
-    public class Plugin : PulsarPlugin
+    public class Plugin : PulsarMod
     {
         public override string HarmonyIdentifier()
         {
             return "FCGWolfe.RSTS";
         }
 
-        public override string Version => "1.1_public";
+        public override string Version => "1.2c_public";
 
+        private string LongAuthor = "Created by 💩Ship's Compooter💩, based off code from FloppyDisk's core temp readout mod, made fully functional by Dragon.";
 
         public override string Author => "💩Ship's Compooter💩 | Dragon";
 
